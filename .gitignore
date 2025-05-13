@@ -6,3 +6,4 @@
 config.yml
 __pycache__/
 temp*.py
+.node_modules
