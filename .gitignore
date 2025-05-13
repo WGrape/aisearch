@@ -7,3 +7,5 @@ config.yml
 __pycache__/
 temp*.py
 .node_modules
+web/node_modules/
+web/.next/

@@ -10,18 +10,18 @@ model:
   provider:
     nomic:
       # 官方参数
-      api_base: "http://localhost:11434"
+      api_base: "http://127.0.0.1:11434"
       api_key: "ollama" # ollama默认没有认证, 填任意字符串, 否则openai库会报错
       embedding_dims: 768,
       model: "nomic-embed-text"
       model_type: "embedding_type_nomic"
       retry: 3
     deepseek_chat:
-      api_base: "http://localhost:11434/v1"
+      api_base: "http://127.0.0.1:11434/v1"
       api_key: "ollama" # ollama默认没有认证, 填任意字符串, 否则openai库会报错
-      model: "deepseek-r1:8b"
+      model: "deepseek-r1:8b"  # 如果速度太慢, 可以使用deepseek-r1:1.5b, 速度会有很大提升
       model_type: "model_type_deepseek_chat"
-      max_tokens: 2048
+      max_tokens: 512
       retry: 3
 ## 必应搜索
 bing:
@@ -31,6 +31,7 @@ bing:
 ## 关系数据库
 database:
     dsn:
+      pool_size: 32
       host: 127.0.0.1
       database: temp_aisearch
       user: root

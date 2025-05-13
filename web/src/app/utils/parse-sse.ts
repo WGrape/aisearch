@@ -27,7 +27,7 @@ export const parseSSE = (
       eventSource.close()
 
       const conversation_id = data.conversation_id; 
-      fetch(`http://127.0.0.1:8100/api/search/predict_next_questions?conversation_id=${conversation_id}`)
+      fetch(`http://127.0.0.1:8100/api/search/predict_questions?conversation_id=${conversation_id}`)
       .then(response => {
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -36,10 +36,10 @@ export const parseSSE = (
       })
       .then(result => {
         onRelates(result.data.questions);
-          console.log("Predict Next Questions Response:", result);
+          console.log("Predict Questions Response:", result);
       })
       .catch(error => {
-          console.error("Error fetching predict_next_questions:", error);
+          console.error("Error fetching predict_questions:", error);
       });
 
       return;

@@ -107,12 +107,6 @@ query改写器
 ```
 ## 要求
 1. 不要扩展提问的含义。
-2. 返回结构如下所示。
-```json
-{{
-"query_list": [],
-}}
-```
 ## 工作流
 1. 认真理解聊天记录
 2. 先判断用户的提问是否存在指代。
@@ -129,33 +123,16 @@ query改写器
 ## 目标
 对用户提问做分析和深度意图挖掘，并动态给出相应的规划。
 ## 可选择的意图
-- 方法 / method ：比如 ”如何零基础学习唱歌“，”如何学习大模型技术“，”如何自学高等数学“。
-- 创作 / write ：比如 ”帮我写个短篇小说“，”给我写篇关于大模型技术的博客“，”帮我写篇关于春天的自媒体文章“。
-- 总结 / summary ：比如 ”天空为什么是蓝色的“，”为什么大模型会出现幻觉“。
-- 无 / none ：无任务意图，比如 ”你好啊“，”请问你是谁啊“。
+- method ：比如 ”如何零基础学习唱歌“，”如何学习大模型技术“，”如何自学高等数学“。
+- write ：比如 ”帮我写个短篇小说“，”给我写篇关于大模型技术的博客“，”帮我写篇关于春天的自媒体文章“。
+- summary ：比如 ”天空为什么是蓝色的“，”为什么大模型会出现幻觉“。
+- none ：无任务意图，比如 ”你好啊“，”请问你是谁啊“。
 ## 可选择的动作
 - 联网搜索并输出:  {{"type": "search_web_and_output", "keyword": "the search keyword", "part": "which part does the output belong to"}}
 - 本地检索并输出:  {{"type": "search_local_and_output", "keyword": "the search keyword", "part": "which part does the output belong to"}}
 - 仅输出:  {{"type": "output", "part": "which part does the output belong to"}}
 - 结束:  {{"type": "end"}}
 ## 示例
-### 教我零基础学习Python语言
-```json
-{{
-    "thought": "嗯，你向我询问学习Python编程语言。考虑到你零基础，可能从事非计算机领域。所以，我在回答前，我会先帮你联网搜索并解释编程语言和计算机领域的关系，接着我会联网搜索编程语言的作用。然后我开始正式回答你的问题，开始联网搜索并告诉你Python语言的基础知识和学习方法，再帮你联网搜索和推荐一些相关的学习课程，最后我自己给你一些Python语言的编程案例供你学习使用。",
-    "plan": [
-        {{"type": "search_web_and_output", "keyword": "编程语言和计算机领域的关系", "part": "编程语言的背景"}},
-        {{"type": "search_web_and_output", "keyword": "编程语言的作用", "part": "编程语言的作用"}},
-        {{"type": "search_web_and_output", "keyword": "Python语言的基础知识", "part": "基础知识"}},
-        {{"type": "search_web_and_output", "keyword": "Python语言的学习方法", "part": "学习方法"}},
-        {{"type": "search_web_and_output", "keyword": "Python语学习课程推荐", "part": "课程推荐"}},
-        {{"type": "search_web_and_output", "keyword": "Python编程案例", "part": "编程案例"}},
-        {{"type": "output", "part": "总结"}},
-        {{"type": "end"}}
-    ],
-    "intention": "method"
-}}
-```
 ### 请介绍《英雄儿女》这部电影
 ```json
 {{
@@ -171,13 +148,9 @@ query改写器
 }}
 ```
 ## 要求
-1. 如果提问意图为”方法“，必须按照有顺序、有逻辑条理的方式来解答。
-2. 如果提问意图为”总结“，则必须在正面回答问题的前提下，自行规划。
+1. 如果提问意图为”method“，必须按照有顺序、有逻辑条理的方式来解答。
+2. 如果提问意图为”summary“，则必须在正面回答问题的前提下，自行规划。
 3. 如果涉及到和电影信息相关的步骤，你必须调用search_local_and_output本地搜索动作。
-## 注意
-1. **禁止**直接给出问题的答案，你只能分析问题。
-2. 你生成的规划其实就是一个步骤列表，包括了在某个意图下生成的所有步骤列表。
-3. 用户不会和你聊天，只会向你提问，所以你不能回答用户的问题，你只需要在经过分析和挖掘后，给出用户意图及规划。    
 """
 
     def _make_user_prompt(self, query: str, messages: list = None):
@@ -333,6 +306,8 @@ query改写器
             # 检查search_local_and_output类型
             if item["type"] == ACTION_TYPE_SEARCH_LOCAL_AND_OUTPUT and "part" not in item and "keyword" not in item:
                 continue
+            if "part" not in item and "keyword" in item:
+                item["part"] = item["keyword"]
             new_action_list.append(item)
         # (4) 如果没有动作列表为空, 则返回默认规划
         if len(new_action_list) <= 0:
