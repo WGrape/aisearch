@@ -1,0 +1,4 @@
+wpylib==0.0.11
+ollama
+scrapy
+pymysql

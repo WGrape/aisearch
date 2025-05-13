@@ -1,0 +1,58 @@
+# 项目基础配置如下所示
+project: "aisearch"
+business: "aisearch"
+global_base_dir: "~/github/aisearch"
+env: test
+# 非实例对象配置如下所示
+## 大模型厂商
+model:
+  name: azure
+  provider:
+    nomic:
+      # 官方参数
+      api_base: "http://localhost:11434"
+      api_key: "ollama" # ollama默认没有认证, 填任意字符串, 否则openai库会报错
+      embedding_dims: 768,
+      model: "nomic-embed-text"
+      model_type: "embedding_type_nomic"
+      retry: 3
+    deepseek_chat:
+      api_base: "http://localhost:11434/v1"
+      api_key: "ollama" # ollama默认没有认证, 填任意字符串, 否则openai库会报错
+      model: "deepseek-r1:8b"
+      model_type: "model_type_deepseek_chat"
+      max_tokens: 2048
+      retry: 3
+## 必应搜索
+bing:
+  bing_subscription_key: "${bing_subscription_key}"
+  bing_search_url: "https://api.bing.microsoft.com/v7.0/search"
+# 实例对象配置如下所示
+## 关系数据库
+database:
+    dsn:
+      host: 127.0.0.1
+      database: temp_aisearch
+      user: root
+      password:
+      port: 3306
+      connect_timeout: 10
+    retry: 3
+## 向量数据库
+milvus:
+  uri: "http://127.0.0.1:19530"
+  host: "127.0.0.1"
+  port: "19530"
+  db_name: "milvus_aisearch"
+  collection:
+    aisearch_answer: "aisearch_answer"
+    test: "test"
+## 日志
+logger:
+  level: DEBUG
+  log_format: '%(asctime)s - %(message)s'
+## langfuse
+langfuse:
+  host: "https://cloud.langfuse.com"
+  secret_key: "${langfuse_secret_key}"
+  public_key: "${langfuse_public_key}"
