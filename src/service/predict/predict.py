@@ -28,6 +28,7 @@ def gen_predict_questions(conversation_id: int):
     ```json
     {
         "questions": [
+            ""
         ]
     }
     ```
@@ -54,7 +55,7 @@ def gen_predict_questions(conversation_id: int):
     # 调用大模型生成总结结果
     questions = []
     messages = get_message_list(where={"conversation_id": conversation_id, "deleted": 0})
-    user_prompt = make_conversation_history(messages)
+    user_prompt = make_conversation_history(messages=messages, only_user=True)
     llm_invoke = chain.invoke(
         input=user_prompt,
         config={

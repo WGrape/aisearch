@@ -9,10 +9,10 @@ from src.core.entity.strategy.strategy import Strategy
 from wpylib.util.x.xjson import extract_first_json
 from wpylib.pkg.sse.stream_queue import StreamQueue, NoneQueue
 from wpylib.pkg.langchain.history import make_conversation_history
-from src.init.init import global_config, global_instance_localcache
 from wpylib.pkg.langchain.prompt import create_chat_prompt_by_messages
 from wpylib.pkg.langchain.chain import create_chain, make_chain_callbacks
 from langchain_core.prompts.chat import SystemMessage, HumanMessagePromptTemplate
+from src.init.init import global_config, global_instance_localcache, global_instance_logger
 from src.core.entity.strategy.strategy import ROLE_PROFESSIONAL, EMOTION_PROFESSIONAL, ANSWER_STYLE_PROFESSIONAL
 
 STREAM_MESSAGE_ANALYZER = "analyzer"
@@ -277,7 +277,12 @@ query改写器
                 )
             }
         )
-        llm_result = extract_first_json(llm_invoke["text"])
+        try:
+            # 上下文太长，会偶现输出错误，需要兼容处理
+            llm_result = extract_first_json(llm_invoke["text"])
+        except Exception as e:
+            global_instance_logger.log_error(msg="json error", biz_data={"e": e})
+            return DEFAULT_INTENTION_PLAN
 
         # 检查大模型返回
         # (1) thought 字段检查

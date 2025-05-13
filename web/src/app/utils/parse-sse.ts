@@ -14,7 +14,7 @@ export const parseSSE = (
   onRelates: (value: Relate[]) => void,
   onError?: (status: number) => void,
 ) => {
-  const eventSource = new EventSource(`http://127.0.0.1:8100/api/search_sse?query=${encodeURIComponent(query)}&version=v2&mode=${mode}`);
+  const eventSource = new EventSource(`http://127.0.0.1:8100/api/search_sse?query=${encodeURIComponent(query)}&mode=${mode}`);
 
   var answer = ""
 

@@ -34,7 +34,7 @@ def predict_questions():
     # 获取请求数据
     arg_info = context_data["arg_info"]
     conversation_id = arg_info["conversation_id"]
-    if conversation_id < 1:
+    if not conversation_id or conversation_id < 1:
         # 结果响应
         return resp_success({
             "questions": []
