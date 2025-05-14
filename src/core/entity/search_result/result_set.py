@@ -32,14 +32,17 @@ class ResultSet:
         combine_extra_data: dict = {}
         combine_crawl_id_list: list[int] = []
         combine_web_document_list: list[WebDocument] = []
+        combine_knowledge_document_list: list[KnowledgeDocument] = []
         for temp_result_set in result_set_list:
             combine_extra_data.update(temp_result_set.get_extra_data())
             combine_crawl_id_list.extend(temp_result_set.get_crawl_id_list())
             combine_web_document_list.extend(temp_result_set.get_web_document_list())
+            combine_knowledge_document_list.extend(temp_result_set.get_knowledge_document_list())
 
         combine_result_set = ResultSet()
         combine_result_set.reset(
             web_document_list=combine_web_document_list,
+            knowledge_document_list=combine_knowledge_document_list,
             crawl_id_list=combine_crawl_id_list,
             extra_data=combine_extra_data,
         )
