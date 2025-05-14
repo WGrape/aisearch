@@ -167,6 +167,9 @@ query改写器
         """
         分析问题类目
         """
+        # 默认结果
+        default_result = {"category": "交流与日常互动"}
+
         # 拼接用户部分的Prompt
         user_prompt = self._make_user_prompt(query=query, messages=messages)
 
@@ -192,7 +195,11 @@ query改写器
         )
 
         # 解析大模型的返回
-        llm_result = extract_first_json(llm_invoke["text"])
+        try:
+            llm_result = extract_first_json(llm_invoke["text"])
+        except Exception as e:
+            global_instance_logger.log_error(msg="json error", biz_data={"e": e})
+            return default_result
 
         # 检查大模型的返回
         category_list = [
@@ -206,7 +213,7 @@ query改写器
         ]
         if "category" not in llm_result or not isinstance(llm_result["category"], str) \
                 or llm_result["category"] not in category_list:
-            llm_result["category"] = "交流与日常互动"
+            return default_result
         return llm_result
 
     def analysis_rewriting(self, query: str, messages: list = None) -> dict:
@@ -214,10 +221,13 @@ query改写器
         用户query改写
         :return:
         """
+        # 默认结果
+        default_result = {"query_list": [query]}
+
         # 如果超过一定长度, 则不做Query改写
         max_len = 30
         if len(query) > max_len:
-            return {"query_list": [query]}
+            return default_result
 
         # 拼接用户部分的Prompt
         user_prompt = self._make_user_prompt(query=query, messages=messages)
@@ -244,7 +254,11 @@ query改写器
         )
 
         # 解析大模型的返回
-        llm_result = extract_first_json(llm_invoke["text"])
+        try:
+            llm_result = extract_first_json(llm_invoke["text"])
+        except Exception as e:
+            global_instance_logger.log_error(msg="json error", biz_data={"e": e})
+            return default_result
         return llm_result
 
     def analysis_intention_plan(
