@@ -35,8 +35,17 @@ export const parseSSE = (
           return response.json();
       })
       .then(result => {
-        onRelates(result.data.questions);
-          console.log("Predict Questions Response:", result);
+        var questions = [
+          {
+            "id":1,
+            "question": "推荐一些最近的热点新闻",
+          }
+        ]
+        if (result.data.questions.length >0) {
+          questions = result.data.questions
+        }
+        onRelates(questions);
+          console.log("Predict Questions Response:", result, questions);
       })
       .catch(error => {
           console.error("Error fetching predict_questions:", error);
