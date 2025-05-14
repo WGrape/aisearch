@@ -9,6 +9,55 @@ import { Source } from "@/app/interfaces/source";
 import { BookOpenText } from "lucide-react";
 import { FC } from "react";
 import Markdown from "react-markdown";
+import React from "react";
+
+type CustomTextRendererProps = {
+  children: React.ReactNode; // ReactMarkdown 的子节点类型
+};
+
+function CustomTextRenderer({ children }: CustomTextRendererProps) {
+  // 将 children 转换为字符串或 React 元素数组
+  const renderChildren = (child: React.ReactNode): React.ReactNode => {
+    if (typeof child === "string") {
+      // 对字符串进行处理
+      const parts = child.split(/(\[citation:\d+\])/g);
+
+      return parts.map((part, index) => {
+        if (part.match(/\[citation:(\d+)\]/)) {
+          const citationNumber = part.match(/\[citation:(\d+)\]/)?.[1];
+          return (
+            <sup
+              key={`citation-${index}`}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "1.5em",
+                height: "1.5em",
+                marginLeft: "0.2em",
+                fontSize: "0.8em",
+                backgroundColor: "#ddd", // 灰色背景
+                color: "black", // 字体颜色
+                borderRadius: "50%", // 圆形效果
+                fontWeight: "bold", // 字体加粗
+                lineHeight: "1.5em", // 垂直居中
+              }}
+            >
+              {citationNumber}
+            </sup>
+          );
+        } else {
+          return part;
+        }
+      });
+    } else {
+      // 如果是 React 元素，直接返回
+      return child;
+    }
+  };
+
+  return <>{React.Children.map(children, renderChildren)}</>;
+}
 
 export const Answer: FC<{ markdown: string; sources: Source[] }> = ({
   markdown,
@@ -26,6 +75,8 @@ export const Answer: FC<{ markdown: string; sources: Source[] }> = ({
           <div className="prose prose-sm max-w-full">
             <Markdown
               components={{
+                // Customize the rendering of text nodes
+                p: ({ children }) => <p><CustomTextRenderer>{children}</CustomTextRenderer></p>, // 小心这里的处理会影响加粗等P标签内可能存在的样式，所以需要兼容
                 a: ({ node: _, ...props }) => {
                   if (!props.href) return <></>;
                   const source = sources[+props.href - 1];
