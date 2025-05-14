@@ -40,11 +40,14 @@ class BingSearchRetriever(Retriever):
 
         # 开始搜索
         search_list = self._instance_bing_search.results(query, count)
+        # 搜索接口可能返回无结果: search_list = [{'Result': 'No good Bing Search Result was found'}]
 
         # 封装数据集
         result_set = ResultSet()
         web_document_list: list[WebDocument] = []
         for k, item in enumerate(search_list):
+            if "snippet" not in item or item["snippet"] == "":
+                continue
             # 参数检查, 有时候必应接口返回的字段会缺少link
             if "link" not in item:
                 item["link"] = ""
