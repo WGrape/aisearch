@@ -76,9 +76,9 @@ class Crawl(Filter):
             return new_web_document
 
         # 5. 更新文档信息
-        new_web_document.update_title(crawl_docs[0].get_title())
-        new_web_document.update_description(crawl_docs[0].get_description())
-        new_web_document.update_content(crawl_docs[0].get_content())
+        new_web_document.update_title(crawl_docs[0].get_title() or "无法获取")
+        new_web_document.update_description(crawl_docs[0].get_description() or "无法获取")
+        new_web_document.update_content(crawl_docs[0].get_content() or "无法获取")
         return new_web_document
 
     def choose(self, result_set: ResultSet, **kwargs) -> ResultSet:
