@@ -70,7 +70,7 @@ class Scheduler:
                 result_set = self._search_web_action.do(
                     search_web_param=RetrieverParam(
                         query=plan.get_query() + " " + action_item["part"],
-                        count=10,
+                        count=3,
                         start_index=start_index,
                     ),
                     filter_list=filter_list,
@@ -82,7 +82,7 @@ class Scheduler:
                 result_set = self._search_local_action.do(
                     search_local_param=RetrieverParam(
                         query=plan.get_query() + " " + action_item["part"],
-                        count=10,
+                        count=3,
                         min_score=0.92,
                     ),
                     queue=queue
@@ -107,7 +107,7 @@ class Scheduler:
                 result_set, outcome = self._search_web_and_output_action.do(
                     search_web_param=RetrieverParam(
                         query=plan.get_query() + " " + action_item["part"],
-                        count=10,
+                        count=3,
                         start_index=start_index,
                     ),
                     generator_param=GeneratorParam(
@@ -130,7 +130,7 @@ class Scheduler:
                 result_set, outcome = self._search_local_and_output_action.do(
                     search_local_param=RetrieverParam(
                         query=plan.get_query() + " " + action_item["part"],
-                        count=10,
+                        count=3,
                         min_score=0.92,
                     ),
                     generator_param=GeneratorParam(
@@ -195,7 +195,7 @@ class Scheduler:
                 query_rewriting=plan.get_query_rewriting(),
                 query_domain=plan.get_query_domain(),
                 strategy=plan.get_strategy(),
-                user_prompt=plan.get_user_prompt(),
+                user_prompt=plan.get_user_prompt().format(title=plan.get_query()),
             ),
             result_set=result_set,
             messages=messages,
