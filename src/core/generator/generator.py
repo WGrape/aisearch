@@ -137,8 +137,6 @@ class Generator:
         for item in llm_text_generator:
             llm_text += item.content
             # 如果使用DeepSeek模型, 需要舍去<think></think>标签内的思考部分, 此部分不作为答案。
-            if len(llm_text) <= len("<think>"):
-                continue
             if not inside_think and "<think>" in llm_text:
                 inside_think = True
                 continue
