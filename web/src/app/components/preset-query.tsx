@@ -3,8 +3,10 @@ import { nanoid } from "nanoid";
 import Link from "next/link";
 import React, { FC, useMemo } from "react";
 
-export const PresetQuery: FC<{ query: string }> = ({ query }) => {
-  const rid = useMemo(() => nanoid(), [query]);
+export const PresetQuery: FC<{ query: string; rid: string }> = ({ query, rid}) => {
+  // 会报错: Warning: Prop `href` did not match. Server: "xxx", Client: "xxx"
+  // const rid = useMemo(() => nanoid(), [query]);
+  // const rid = "fixed_rid" // 使用固定的rid可以解决, 最终方案是使用传来的rid参数
 
   return (
     <Link

@@ -4,8 +4,11 @@ import { Wrapper } from "@/app/components/wrapper";
 import { Relate } from "@/app/interfaces/relate";
 import { MessageSquareQuote } from "lucide-react";
 import React, { FC } from "react";
+import { nanoid } from "nanoid";
 
 export const Relates: FC<{ relates: Relate[] | null }> = ({ relates }) => {
+  const rid = nanoid(); // 在服务器端生成随机值
+
   return (
     <Wrapper
       title={
@@ -18,7 +21,7 @@ export const Relates: FC<{ relates: Relate[] | null }> = ({ relates }) => {
           {relates !== null ? (
             relates.length > 0 ? (
               relates.map(({ question }) => (
-                <PresetQuery key={question} query={question}></PresetQuery>
+                <PresetQuery key={question} query={question} rid={rid}></PresetQuery>
               ))
             ) : (
               <div className="text-sm">No related questions.</div>
