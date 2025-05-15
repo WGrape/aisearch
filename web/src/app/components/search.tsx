@@ -27,7 +27,7 @@ export const Search: FC = () => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           autoFocus
-          placeholder="Ask Lepton AI anything ..."
+          placeholder="请提出你的任何问题 ..."
           className="px-2 pr-6 w-full rounded-md flex-1 outline-none bg-white"
         />
         <button

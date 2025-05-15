@@ -19,8 +19,8 @@ export default function Home() {
         <Logo></Logo>
         <Search></Search>
         <div className="flex gap-2 flex-wrap justify-center">
-          <PresetQuery query="Who said live long and prosper?" rid={rid1}></PresetQuery>
-          <PresetQuery query="Why do we only see one side of the moon?" rid={rid1}></PresetQuery>
+          <PresetQuery query="请给我推荐最新的新闻" rid={rid1}></PresetQuery>
+          <PresetQuery query="如何更好的学习Python语言" rid={rid1}></PresetQuery>
         </div>
         <Footer></Footer>
       </div>

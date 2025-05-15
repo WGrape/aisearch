@@ -100,7 +100,7 @@ export function Sidebar() {
 
       <h2 className="text-lg text-center p-4 border-b border-gray-300">
         <Link href="/" className="text-blue-500 hover:underline">
-          AISearch
+          Wgrape AISearch
         </Link>
       </h2>
 
@@ -115,19 +115,38 @@ export function Sidebar() {
             {/*  {new Date(session.create_time).toLocaleString()}*/}
             {/*</div>*/}
 
+            {/*<Link href={`/conversation/${session.id}`} className="block">*/}
+            {/*  <div>{session.query}</div>*/}
+            {/*  <div className="bottom-2 right-2 text-xs text-right text-gray-500">*/}
+            {/*    {new Date(session.create_time).toLocaleString()}*/}
+            {/*  </div>*/}
+            {/*</Link>*/}
+
+            {/* <button*/}
+            {/*  className="bottom-2 left-2 text-xs text-red-500 bg-gray-100 p-1 rounded hover:bg-red-100"*/}
+            {/*  onClick={() => deleteSession(session.id)}*/}
+            {/*>*/}
+            {/*  删除*/}
+            {/*</button>*/}
+
+
             <Link href={`/conversation/${session.id}`} className="block">
               <div>{session.query}</div>
-              <div className="absolute bottom-2 right-2 text-xs text-gray-500">
-                {new Date(session.create_time).toLocaleString()}
+              <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                {/* 时间 */}
+                <div className="text-right">{new Date(session.create_time).toLocaleString()}</div>
+                {/* 删除按钮 */}
+                <button
+                  className="text-red-500 bg-gray-100 p-1 rounded hover:bg-red-100"
+                  onClick={(e) => {
+                    e.preventDefault(); // 防止点击删除时触发跳转
+                    deleteSession(session.id);
+                  }}
+                >
+                  删除
+                </button>
               </div>
             </Link>
-
-             <button
-              className="bottom-2 left-2 text-xs text-red-500 bg-gray-100 p-1 rounded hover:bg-red-100"
-              onClick={() => deleteSession(session.id)}
-            >
-              删除
-            </button>
 
           </li>
         ))}
