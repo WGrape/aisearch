@@ -50,6 +50,27 @@ export function Sidebar() {
     }
   };
 
+  // 删除会话
+  const deleteSession = async (id: string) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8100/api/search/history/delete`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }), // 将 id 作为请求体参数传递
+      });
+
+      if (response.ok) {
+        setSessions((prev) => prev.filter((session) => session.id !== id)); // 从会话列表中移除已删除的会话
+      } else {
+        console.error("Failed to delete session");
+      }
+    } catch (error) {
+      console.error("Error deleting session:", error);
+    }
+  };
+
   useEffect(() => {
     fetchSessions(); // 初次加载数据
   }, [offset]); // 加上offset，可以解决offset不自增+1的bug
@@ -84,6 +105,14 @@ export function Sidebar() {
             <div className="bottom-2 right-2 text-xs text-right text-gray-500" style={{marginTop: "10px"}}>
               {new Date(session.create_time).toLocaleString()}
             </div>
+
+             <button
+              className="bottom-2 left-2 text-xs text-red-500 bg-gray-100 p-1 rounded hover:bg-red-100"
+              onClick={() => deleteSession(session.id)}
+            >
+              删除
+            </button>
+
           </li>
         ))}
       </ul>

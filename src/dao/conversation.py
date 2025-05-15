@@ -90,7 +90,7 @@ def get_pagination_conversation_list(user_id: int, pg: int, pz: int) -> list:
     :return: 分页获取会话
     """
     # 生成语句
-    where_str = f"where user_id = {user_id}"
+    where_str = f"where user_id = {user_id} and deleted = 0"
     order_str = "order by id desc"
     limit_str = f"limit {pz} offset {(pg - 1) * pz}"
     select_query = f"select * from aisearch_conversation {where_str} {order_str} {limit_str}"
@@ -107,7 +107,7 @@ def get_conversation_count(user_id: int) -> int:
     :return: 返回会话总数量
     """
     # 生成语句
-    where_str = f"where user_id = {user_id}"
+    where_str = f"where user_id = {user_id} and deleted = 0"
     select_query = f"select count(1) as 'total' from aisearch_conversation {where_str}"
 
     # 执行语句
