@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
+// import { Link } from "react-router-dom"; // 引入 Link 组件
+import Link from "next/link"; // 使用 next/link 代替 react-router-dom 的 Link
 
 type Session = {
   id: string;
@@ -92,19 +94,33 @@ export function Sidebar() {
       ref={sidebarRef}
       className="fixed left-0 top-0 bottom-0 w-64 bg-gray-100 border-r border-gray-300 overflow-auto"
     >
+      {/*<h2 className="text-lg text-center p-4 border-b border-gray-300">*/}
+      {/*  会话列表*/}
+      {/*</h2>*/}
+
       <h2 className="text-lg text-center p-4 border-b border-gray-300">
-        会话列表
+        <Link href="/" className="text-blue-500 hover:underline">
+          AISearch
+        </Link>
       </h2>
+
       <ul className="p-4 space-y-2">
         {sessions.map((session) => (
           <li
             key={session.id}
             className="p-2 bg-white rounded shadow hover:bg-gray-200"
           >
-             <div style={{color: "#555", fontSize: "13px"}}>{session.query}</div>
-            <div className="bottom-2 right-2 text-xs text-right text-gray-500" style={{marginTop: "10px"}}>
-              {new Date(session.create_time).toLocaleString()}
-            </div>
+            {/* <div style={{color: "#555", fontSize: "13px"}}>{session.query}</div>*/}
+            {/*<div className="bottom-2 right-2 text-xs text-right text-gray-500" style={{marginTop: "10px"}}>*/}
+            {/*  {new Date(session.create_time).toLocaleString()}*/}
+            {/*</div>*/}
+
+            <Link href={`/conversation/${session.id}`} className="block">
+              <div>{session.query}</div>
+              <div className="absolute bottom-2 right-2 text-xs text-gray-500">
+                {new Date(session.create_time).toLocaleString()}
+              </div>
+            </Link>
 
              <button
               className="bottom-2 left-2 text-xs text-red-500 bg-gray-100 p-1 rounded hover:bg-red-100"
