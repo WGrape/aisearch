@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import {Relate} from "@/app/interfaces/relate";
 import { Sidebar } from "@/app/components/sidebar"; // 引入 Sidebar
 import { Title } from "@/app/components/title"; // 复用搜索页面的标题组件
 import { Thought } from "@/app/components/thought"; // 引入 Thought 组件
@@ -78,7 +79,13 @@ export default function SessionDetails() {
   }
 
   if (!sessionDetails || sessionDetails.length === 0) {
-    return <div className="text-center p-4 text-gray-500">未找到会话详情</div>;
+    // return <div className="text-center p-4 text-gray-500">未找到会话详情</div>;
+     return (
+      <div className="absolute inset-0 bg-[url('/bg.svg')]">
+        <Sidebar /> {/* 左侧固定栏 */}
+        <div className="text-center p-4 text-gray-500" style={{position: "absolute", left: "50%", top: "50%"}}>未找到会话详情</div>;
+      </div>
+    );
   }
 
   return (
@@ -87,20 +94,12 @@ export default function SessionDetails() {
       <div className="mx-auto max-w-3xl absolute inset-4 md:inset-8 bg-white">
         <div className="h-20 pointer-events-none rounded-t-2xl w-full backdrop-filter absolute top-0 bg-gradient-to-t from-transparent to-white [mask-image:linear-gradient(to_bottom,white,transparent)]"></div>
         <div className="px-4 md:px-8 pt-6 pb-24 rounded-2xl ring-8 ring-zinc-300/20 border border-zinc-200 h-full overflow-auto">
-          <Title query={`会话详情 - ID: ${id}`} /> {/* 使用标题组件 */}
           <div className="space-y-6">
             {sessionDetails.map((item) => (
               <div key={item.message_id} className="flex flex-col gap-8">
-                {/* Thought Section */}
-                <Thought thought={item.query} />
-
-                {/* Answer Section */}
-                {/*<Answer markdown={item.answer} sources={item.references.map((ref) => ({ name: ref, url: ref }))} />*/}
-
-                {/* Sources Section */}
-                {/*<Sources relates={null} sources={item.references.map((ref) => ({ name: ref, url: ref }))} />*/}
-
-                {/* Answer Section */}
+                <Title query={item.query}></Title>
+                {/*不显示Thought思考*/}
+                {/*<Thought thought={item.query} />*/}
                 <Answer
                   markdown={item.answer}
                   sources={item.references.map((ref, index) => ({
@@ -117,10 +116,8 @@ export default function SessionDetails() {
                     isNavigational: false, // 默认值
                   }))}
                 />
-
-                {/* Sources Section */}
                 <Sources
-                  relates={null}
+                  relates={[{"question": "推荐问题"}]}
                   sources={item.references.map((ref, index) => ({
                     id: `source-${index}`, // 生成唯一 ID
                     name: ref, // 使用引用字符串作为名称

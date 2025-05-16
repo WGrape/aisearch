@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export const Title = ({ query }: { query: string }) => {
   const router = useRouter();
   return (
-    <div className="flex items-center pb-4 mb-6 border-b gap-4">
+    <div className="flex items-center pb-4 mb-6 border-b gap-4" style={{marginBottom: "0"}}>
       <div
         className="flex-1 text-lg sm:text-xl text-black text-ellipsis overflow-hidden whitespace-nowrap"
         title={query}
