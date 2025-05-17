@@ -105,7 +105,7 @@ export function Sidebar() {
       </h2>
 
       <ul className="p-4 space-y-2">
-        {sessions.map((session) => (
+        {sessions.map((session,index) => (
           <li
             key={session.id}
             className="p-2 bg-white rounded shadow hover:bg-gray-200"
@@ -132,7 +132,7 @@ export function Sidebar() {
 
             <Link href={`/conversation/${session.id}`} className="block">
               <div>{session.query}</div>
-              <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+              <div className="flex items-center justify-between text-sm text-gray-500 mt-2">
                 {/* 时间 */}
                 <div className="text-right">{new Date(session.create_time).toLocaleString()}</div>
                 {/* 删除按钮 */}
@@ -140,12 +140,16 @@ export function Sidebar() {
                   className="text-red-500 bg-gray-100 p-1 rounded hover:bg-red-100"
                   onClick={(e) => {
                     e.preventDefault(); // 防止点击删除时触发跳转
-                    deleteSession(session.id);
+                    const confirmDelete = window.confirm("确定要删除这个会话吗？"); // 弹窗确认
+                    if (confirmDelete) {
+                      deleteSession(session.id);
+                    }
                   }}
                 >
                   删除
                 </button>
               </div>
+              <div className="text-left text-xs text-gray-500">会话ID={session.id}</div>
             </Link>
 
           </li>
