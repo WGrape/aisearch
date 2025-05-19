@@ -32,7 +32,7 @@ class Remove(Filter):
             if source in black_sources:
                 continue
 
-            # 加入新的文档列表中
+            # 将筛选后的文档加入到文档列表中
             new_web_document_list.append(new_web_document)
 
         # 返回结果集

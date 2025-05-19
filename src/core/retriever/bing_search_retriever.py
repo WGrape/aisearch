@@ -74,7 +74,7 @@ class BingSearchRetriever(Retriever):
                 content="",
             )
 
-            # 加入到web_document列表中
+            # 把web_document加入到文档列表中
             web_document_list.append(web_document)
         result_set.reset(web_document_list=web_document_list)
 
