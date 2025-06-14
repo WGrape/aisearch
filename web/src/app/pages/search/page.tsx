@@ -7,19 +7,10 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 export default function SearchPage() {
-  const [conversationId, setConversationId] = useState<number>(0);
   const [searchRecords, setSearchRecords] = useState<
     { query: string; mode: string; rid: string; conversation_id: number }[]
   >([]);
   const searchParams = useSearchParams();
-
-  // Retrieve conversation_id from localStorage
-  useEffect(() => {
-    const local_conversation_id = localStorage.getItem("conversation_id");
-    const parsedId =
-      local_conversation_id === null ? 0 : parseInt(local_conversation_id, 10);
-    setConversationId(parsedId);
-  }, []);
 
   // Handle initial search from URL parameters
   useEffect(() => {
@@ -27,27 +18,22 @@ export default function SearchPage() {
     const mode = searchParams.get("mode") || "simple";
     const rid = searchParams.get("rid");
 
-    // conversationId可能为0，所以不要限定
-    // if (query && rid && conversationId) {
+    const local_conversation_id = localStorage.getItem("conversation_id");
+    const parsedId = local_conversation_id === null ? 0 : parseInt(local_conversation_id, 10);
+
     if (query && rid) {
-      setSearchRecords((prev) => [
-        ...prev,
-        { query, mode, rid, conversation_id: conversationId },
-      ]);
+      setSearchRecords([{ query, mode, rid, conversation_id: parsedId }]);
     }
-  }, [searchParams, conversationId]);
+  }, [searchParams]); // Ensure this effect only runs when `searchParams`
 
   const handleSearch = (query: string, mode: string, rid: string) => {
     const local_conversation_id = localStorage.getItem("conversation_id");
-    const parsedId =
-      local_conversation_id === null ? 0 : parseInt(local_conversation_id, 10);
-    setConversationId(parsedId);
-
-    if (conversationId) {
-      setSearchRecords((prev) => [
-        ...prev,
-        { query, mode, rid, conversation_id: conversationId },
-      ]);
+    const parsedId = local_conversation_id === null ? 0 : parseInt(local_conversation_id, 10);
+    if (parsedId) {
+      setSearchRecords((prev) => {
+        // 如果不是首次搜索，保留之前的记录
+        return [...prev, { query, mode, rid, conversation_id: parsedId }];
+      });
     } else {
       console.error("No conversation_id found in localStorage.");
     }
