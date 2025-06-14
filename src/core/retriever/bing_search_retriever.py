@@ -28,6 +28,11 @@ class BingSearchRetriever(Retriever):
         bing_search_url=global_config["bing"]["bing_search_url"],
     )
 
+    def __init__(self):
+        super().__init__()
+        # 设置自定义的超时时间
+        self._instance_bing_search.search_kwargs = {"timeout": 5}  # 超时时间设置为5秒
+
     def retrieve(self, retriever_param: RetrieverParam) -> ResultSet:
         """
         执行入口
