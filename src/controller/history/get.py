@@ -67,7 +67,8 @@ def search_history_get():
         }
 
         # 获取网页内容记录
-        crawl_id_list = get_reference_list(message_id=message["id"], column_list=["crawl_id"])
+        reference_list = get_reference_list(message_id=message["id"], column_list=["crawl_id"])
+        crawl_id_list = [reference["crawl_id"] for reference in reference_list]
         crawl_record_list = get_crawl_record_list(crawl_id_list=crawl_id_list)
         if len(crawl_record_list) <= 0:
             resp.append(item)

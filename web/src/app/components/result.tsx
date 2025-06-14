@@ -10,7 +10,7 @@ import { parseSSE } from "@/app/utils/parse-sse";
 import { Annoyed } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 
-export const Result: FC<{ query: string; rid: string }> = ({ query, rid }) => {
+export const Result: FC<{ conversation_id: number, query: string; mode: string; rid: string }> = ({ conversation_id, query, mode, rid }) => {
   const [thought, setThought] = useState<string>("");
   const [sources, setSources] = useState<Source[]>([]);
   const [markdown, setMarkdown] = useState<string>("");
@@ -20,8 +20,9 @@ export const Result: FC<{ query: string; rid: string }> = ({ query, rid }) => {
     const controller = new AbortController();
     void parseSSE(
       controller,
+      conversation_id,
+      mode,
       query,
-      "simple",
       setThought,
       setSources,
       setMarkdown,
@@ -31,7 +32,7 @@ export const Result: FC<{ query: string; rid: string }> = ({ query, rid }) => {
     return () => {
       controller.abort();
     };
-  }, [query]);
+  }, [conversation_id, mode, query]);
   return (
     <div className="flex flex-col gap-8">
       <Thought thought={thought}></Thought>
