@@ -38,7 +38,7 @@ export const Search: FC<SearchProps> = ({ mode="simple", shouldNavigate = true, 
           } else if (shouldNavigate) {
             // 默认行为：跳转到新页面
             setValue("");
-            router.push(getSearchUrl(0,encodeURIComponent(value), mode, rid));
+            router.push(getSearchUrl(0,value, mode, rid));
           }
           setValue("");
         }

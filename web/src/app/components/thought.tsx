@@ -14,7 +14,7 @@ export const Thought: FC<{ thought: string | null }> = ({ thought }) => {
       }
       content={
         <div className="flex gap-2 flex-col">
-          {thought !== null ? (
+          {thought ? (
             <div className="text-sm">{thought}</div>
           ) : (
             <>
