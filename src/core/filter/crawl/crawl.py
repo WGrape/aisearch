@@ -62,7 +62,7 @@ class Crawl(Filter):
                         "source": new_web_document.get_source()
                     }
                 ],
-                headers={"X-Timeout": "60"}
+                headers={"X-Timeout": "10"}
             )
             global_instance_logger.log_info("aisearch crawl first", biz_data={
                 "crawl_docs": crawl_docs,

@@ -377,11 +377,13 @@ query改写器
             query_domain=self.analysis_category(query=query, messages=messages),
             strategy=strategy,
             user_prompt=f"""
-{make_conversation_history(messages)}
-## 用户提问
-{query}
+{self._make_user_prompt(query, messages)}
+## 之前的输出内容
+{{previous_output}}
 ## 要求
 1. 必须输出标题“## {{title}}”"
+2. 必须注意前后文内容的连贯性
+3. 禁止说参考资料或参考链接
             """,
             # 这个类(Plan的子类)的自定义需要的参数
             action_list=llm_result["plan"],

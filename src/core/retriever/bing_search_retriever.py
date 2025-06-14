@@ -44,7 +44,10 @@ class BingSearchRetriever(Retriever):
         start_index = retriever_param.get_start_index()
 
         # 开始搜索
-        search_list = self._instance_bing_search.results(query, count)
+        try:
+            search_list = self._instance_bing_search.results(query, count)
+        except Exception as e:
+            search_list = []
         # 搜索接口可能返回无结果: search_list = [{'Result': 'No good Bing Search Result was found'}]
 
         # 封装数据集
