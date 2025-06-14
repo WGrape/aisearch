@@ -17,6 +17,9 @@ export const parseSSE = (
 ) => {
   const eventSource = new EventSource(`http://127.0.0.1:8100/api/search_sse?conversation_id=${conversation_id}&query=${encodeURIComponent(query)}&mode=${mode}`);
 
+  // Store conversation_id in localStorage
+  localStorage.setItem("conversation_id", conversation_id.toString());
+
   var answer = ""
 
   eventSource.onmessage = (event) => {
