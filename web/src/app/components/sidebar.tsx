@@ -117,7 +117,7 @@ export function Sidebar() {
             key={session.id}
             className="p-2 bg-white rounded shadow hover:bg-gray-200"
           >
-            <Link href={`/conversation/${session.id}`} className="block">
+            <Link href={`/pages/conversation/${session.id}`} className="block">
               <div>{session.query}</div>
               <div className="flex items-center justify-between text-sm text-gray-500 mt-2">
                 {/* 时间 */}
