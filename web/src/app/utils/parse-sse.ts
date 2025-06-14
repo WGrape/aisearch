@@ -6,15 +6,19 @@ const RELATED_SPLIT = "__RELATED_QUESTIONS__";
 
 export const parseSSE = (
   controller: AbortController,
+  conversation_id: number,
+  mode: string,
   query: string,
-  mode: string = "simple",
   onThought: (value: string) => void,
   onSources: (value: Source[]) => void,
   onMarkdown: (value: string) => void,
   onRelates: (value: Relate[]) => void,
   onError?: (status: number) => void,
 ) => {
-  const eventSource = new EventSource(`http://127.0.0.1:8100/api/search_sse?query=${encodeURIComponent(query)}&mode=${mode}`);
+  const eventSource = new EventSource(`http://127.0.0.1:8100/api/search_sse?conversation_id=${conversation_id}&query=${encodeURIComponent(query)}&mode=${mode}`);
+
+  // Store conversation_id in localStorage
+  localStorage.setItem("conversation_id", conversation_id.toString());
 
   var answer = ""
 
@@ -23,11 +27,16 @@ export const parseSSE = (
     const data = sse_event_data.data;
     console.log("onmessage: ", sse_event_data, data)
     if (sse_event_data.event == "message_end") {
+
+      // Store conversation_id in localStorage
+      localStorage.setItem("conversation_id", sse_event_data.data.conversation_id);
+
       console.log("SSE connection closed: message_end")
       eventSource.close()
 
-      const conversation_id = data.conversation_id; 
-      fetch(`http://127.0.0.1:8100/api/search/predict_questions?conversation_id=${conversation_id}`)
+      // conversation_id = data.conversation_id;
+      // mode = data.mode;
+      fetch(`http://127.0.0.1:8100/api/search/predict_questions?conversation_id=${sse_event_data.data.conversation_id}`)
       .then(response => {
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);

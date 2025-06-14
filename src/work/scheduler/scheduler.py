@@ -97,7 +97,7 @@ class Scheduler:
                         strategy=plan.get_strategy(),
                         user_prompt=plan.get_user_prompt().format(title=action_item["part"])
                     ),
-                    result_set=ResultSet.combine(result_set_list),  # 因为前面可能是累计多个查询, 所以合并多个搜索结果
+                    result_set=ResultSet.combine(result_set_list),  # 在处理仅输出动作时，由于前面可能已累计多个查询结果, 因此需要合并这些搜索结果，以便作为上下文使用。
                     messages=messages,
                     queue=queue
                 )

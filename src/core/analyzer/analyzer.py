@@ -1,7 +1,7 @@
 """
 @File: analyzer.py
 @Date: 2024/12/10 10:00
-@Desc: 基类分析器模块
+@Desc: 分析器模块
 """
 from src.core.entity.plan.plan import Plan
 from wpylib.pkg.langchain.model import Model
@@ -310,19 +310,19 @@ query改写器
                 item={"result": llm_result, "content": f"正在意图识别与规划中，已自动切换为简单意图。"}
             )
             return DEFAULT_INTENTION_PLAN
-        # (3) 检查plan中每个动作是否正确
+        # (3) 检查规划中的每个动作是否正确
         new_action_list = []
         for index, item in enumerate(llm_result["plan"]):
             # 检查type字段
             if "type" not in item or item["type"] not in ACTION_TYPE_LIST:
                 continue
-            # 检查output类型
+            # 检查ACTION_TYPE_OUTPUT动作类型
             if item["type"] == ACTION_TYPE_OUTPUT and "part" not in item:
                 continue
-            # 检查search_web_and_output类型
+            # 检查ACTION_TYPE_SEARCH_WEB_AND_OUTPUT动作类型
             if item["type"] == ACTION_TYPE_SEARCH_WEB_AND_OUTPUT and "part" not in item and "keyword" not in item:
                 continue
-            # 检查search_local_and_output类型
+            # 检查ACTION_TYPE_SEARCH_LOCAL_AND_OUTPUT动作类型
             if item["type"] == ACTION_TYPE_SEARCH_LOCAL_AND_OUTPUT and "part" not in item and "keyword" not in item:
                 continue
             if "part" not in item and "keyword" in item:

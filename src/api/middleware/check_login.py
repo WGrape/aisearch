@@ -31,7 +31,7 @@ def check_login_middleware(func):
         g.context_data["login_info"]["userId"] = user["userId"]
         global_instance_localcache.set_user_id(user["userId"])
 
-        # 放行
+        # 拦截当前请求，直接传递给后续的处理逻辑
         return func(*args, **kwargs)
 
     return wrapper

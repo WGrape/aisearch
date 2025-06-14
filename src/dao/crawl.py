@@ -32,7 +32,7 @@ def add_crawl_record_list(web_document_list: list[WebDocument] = None) -> list[i
             "content": web_document.get_content(),
         }
 
-        # 封装更新数据(深拷贝一份, 防止数据污染)
+        # 封装更新数据(在Python中，可以使用对象的深拷贝来防止数据污染)
         update_data = copy.deepcopy(insert_data)
         update_data["hit_count +"] = "1"
 

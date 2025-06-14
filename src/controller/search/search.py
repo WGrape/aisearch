@@ -54,7 +54,7 @@ def search_sse():
         :return:
         """
         # (1) 同步log_id
-        # 因为这里的process和外部不是一个线程, 所以必须在这里先同步下log_id
+        # 由于这是一个子线程，和外部接口主线程不在同一个线程中, 所以必须在这里先同步下log_id
         global_instance_localcache.set_log_id(log_id)
 
         # (2) 获取请求上下文
@@ -143,7 +143,7 @@ def search_sse():
             crawl_id_list=search_result.get_result_set().get_crawl_id_list()
         )
 
-        # (9) 流式搜索接口结束, 关闭queue, 发送结束信息
+        # (9) 至此，流式搜索接口响应完成，发送结束信息通知前端流程结束
         queue.send_message_end(data={
             "code": COMMON_HTTP_CODE_SUCCESS,
             "conversation_id": conversation_id,

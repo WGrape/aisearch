@@ -14,7 +14,7 @@ from src.controller.search.predict import predict_questions
 from src.init.init import global_instance_flask, global_instance_logger
 
 
-# 注册错误handler
+# 通过装饰器为Flask应用定义一个全局异常处理函数，捕获所有异常并进行统一响应处理
 @global_instance_flask.get_instance_app().errorhandler(Exception)
 def error_handler(e):
     """
