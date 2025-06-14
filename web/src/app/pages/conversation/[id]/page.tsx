@@ -11,6 +11,15 @@ import { Suspense } from "react";
 import { Result } from "@/app/components/result";
 import {Relates} from "@/app/components/relates";
 
+type ReferenceItem = {
+  description: string;
+  icon: string;
+  source: string;
+  source_name: string;
+  title: string;
+  url: string;
+};
+
 type SessionDetailItem = {
   answer: string;
   conversation_id: number;
@@ -18,7 +27,7 @@ type SessionDetailItem = {
   message_id: number;
   mode: string;
   query: string;
-  references: string[];
+  references: ReferenceItem[]; // references 是对象数组
   update_time: string;
 };
 
@@ -32,6 +41,13 @@ export default function SessionDetails() {
   const [searchRecords, setSearchRecords] = useState<{ query: string; mode: string; rid: string }[]>([]); // 搜索记录
   const [loading, setLoading] = useState(true); // 加载状态
   const [error, setError] = useState<string | null>(null); // 错误状态
+
+  const [defaultMode, setDefaultMode] = useState("default");
+  useEffect(() => {
+    if (sessionDetails.length > 0) {
+      setDefaultMode(sessionDetails[0].mode);
+    }
+  }, [sessionDetails]);
 
   // 加载会话详情数据
   useEffect(() => {
@@ -100,13 +116,13 @@ export default function SessionDetails() {
               </div>
               <Answer
                 markdown={item.answer}
-                sources={item.references.map((ref, index) => ({
+                sources={item.references.map((ref_item, index) => ({
                   id: `source-${index}`,
-                  name: ref,
-                  url: ref,
+                  name: ref_item["title"],
+                  url: ref_item["url"],
                   isFamilyFriendly: true,
-                  displayUrl: ref,
-                  snippet: "",
+                  displayUrl: ref_item["url"],
+                  snippet: ref_item["description"],
                   deepLinks: [],
                   dateLastCrawled: new Date().toISOString(),
                   cachedPageUrl: "",
@@ -116,13 +132,13 @@ export default function SessionDetails() {
               />
               <Sources
                 relates={[{ question: "推荐问题" }]}
-                sources={item.references.map((ref, index) => ({
+                sources={item.references.map((ref_item, index) => ({
                   id: `source-${index}`,
-                  name: ref,
-                  url: ref,
+                  name: ref_item["title"],
+                  url: ref_item["url"],
                   isFamilyFriendly: true,
-                  displayUrl: ref,
-                  snippet: "",
+                  displayUrl: ref_item["url"],
+                  snippet: ref_item["description"],
                   deepLinks: [],
                   dateLastCrawled: new Date().toISOString(),
                   cachedPageUrl: "",
@@ -149,7 +165,7 @@ export default function SessionDetails() {
         <div className="absolute z-10 flex items-center justify-center bottom-6 px-4 md:px-8 w-full">
           <div className="w-full">
             <Suspense>
-              <Search shouldNavigate={false} onSearch={handleSearch} /> {/* 使用自定义搜索逻辑 */}
+              <Search mode={defaultMode} shouldNavigate={false} onSearch={handleSearch} /> {/* 使用自定义搜索逻辑 */}
             </Suspense>
           </div>
         </div>

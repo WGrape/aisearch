@@ -46,8 +46,7 @@ class Generator:
     @staticmethod
     def _access_strategy_map(field_str) -> str:
         """
-        访问strategy_map
-        根据领域选择不同的角色、情感、回答风格
+        通过解析传入的field_str字段名称，从STRATEGY_MAP常量中获取对应的strategy_value值，从而实现灵活选择不同的角色、情感、回答风格的效果。
         :param field_str:
         :return:
         """
@@ -152,7 +151,7 @@ class Generator:
             # 输出答案
             queue.send_message(type_str=STREAM_MESSAGE_GENERATION, item={"content": item.content})
 
-        # 输出结尾换行部分
+        # 当内容输出完成后，追加输出"\n\n"这两个换行符，以美化整体输出效果。
         if llm_text != "":
             footer = "\n\n"
             queue.send_message(type_str=STREAM_MESSAGE_GENERATION, item={"content": footer})

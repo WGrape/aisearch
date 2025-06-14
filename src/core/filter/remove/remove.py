@@ -11,7 +11,7 @@ from src.core.entity.search_result.result_set_item.web_document import RESULT_SE
 
 class Remove(Filter):
     """
-    Remove基类
+    移除器
     """
     def choose(self, result_set: ResultSet, **kwargs) -> ResultSet:
         """
@@ -32,7 +32,7 @@ class Remove(Filter):
             if source in black_sources:
                 continue
 
-            # 加入新的文档列表中
+            # 将筛选后的文档加入到文档列表中
             new_web_document_list.append(new_web_document)
 
         # 返回结果集

@@ -55,7 +55,7 @@ def answer_by_cache(
     使用缓存回答
     :return:
     """
-    # (1) 先判断缓存是否存在
+    # (1) 通过检索向量存储中的高相似度问题，可以判断缓存中是否已存在对应的答案
     min_score = 0.92
     answer_list = global_instance_milvus.search(
         collection_name=global_config["milvus"]["collection"]["aisearch_answer"],
@@ -89,7 +89,7 @@ def answer_by_cache(
     queue.send_message(type_str=STREAM_MESSAGE_GENERATION_PENDING, item={"content": ""})
     global_instance_logger.log_info("aisearch answer_from_cache", {"answer_from_cache": answer_from_cache})
 
-    # (5) 调用多样性丰富答案
+    # (5) 调用模型丰富答案的多样性
     model_config = global_config["model"]["provider"]["deepseek_chat"]
     model = Model(model_type=model_config["model_type"], model_config=model_config)
     enrich_answer_generator = model.stream(
@@ -120,7 +120,7 @@ def answer_by_cache(
         answer=enrich_answer
     )
 
-    # (8) 流式接口结束
+    # (8) 至此输出过程结束
     end_data = {
         "code": COMMON_HTTP_CODE_SUCCESS,
         "conversation_id": conversation_id,

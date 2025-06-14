@@ -1,7 +1,7 @@
 """
 @File: list.py
 @Date: 2024/12/10 10:00
-@desc: 查看会话列表接口
+@desc: 会话记录列表接口
 """
 from flask import g
 from flask_wtf import FlaskForm
@@ -26,7 +26,7 @@ class Form(FlaskForm):
 @validate_get_params_middleware(Form)
 def search_history_list():
     """
-    主页(左侧)/获取历史会话列表(带搜索)
+    会话记录列表
     """
     context_data = g.context_data
     arg_info = context_data["arg_info"]
