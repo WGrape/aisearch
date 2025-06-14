@@ -11,7 +11,7 @@ from src.core.entity.search_result.result_set_item.web_document import RESULT_SE
 
 class Remove(Filter):
     """
-    Remove基类
+    移除器
     """
     def choose(self, result_set: ResultSet, **kwargs) -> ResultSet:
         """

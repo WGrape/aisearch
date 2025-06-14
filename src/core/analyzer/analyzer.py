@@ -1,7 +1,7 @@
 """
 @File: analyzer.py
 @Date: 2024/12/10 10:00
-@Desc: 基类分析器模块
+@Desc: 分析器模块
 """
 from src.core.entity.plan.plan import Plan
 from wpylib.pkg.langchain.model import Model
