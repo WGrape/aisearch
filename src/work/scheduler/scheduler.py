@@ -55,6 +55,9 @@ class Scheduler:
         if "filter_list" in kwargs:
             filter_list = kwargs["filter_list"]
 
+        def contact_previous_output():
+            return "\n".join([obj.get_content() for obj in outcome_list])
+
         # 循环动作列表
         start_index = 0
         result_set_list: list[ResultSet] = []
@@ -95,7 +98,7 @@ class Scheduler:
                         query_rewriting=plan.get_query_rewriting(),
                         query_domain=plan.get_query_domain(),
                         strategy=plan.get_strategy(),
-                        user_prompt=plan.get_user_prompt().format(title=action_item["part"])
+                        user_prompt=plan.get_user_prompt().format(title=action_item["part"], previous_output=contact_previous_output())
                     ),
                     result_set=ResultSet.combine(result_set_list),  # 在处理仅输出动作时，由于前面可能已累计多个查询结果, 因此需要合并这些搜索结果，以便作为上下文使用。
                     messages=messages,
@@ -115,7 +118,7 @@ class Scheduler:
                         query_rewriting=plan.get_query_rewriting(),
                         query_domain=plan.get_query_domain(),
                         strategy=plan.get_strategy(),
-                        user_prompt=plan.get_user_prompt().format(title=action_item["part"])
+                        user_prompt=plan.get_user_prompt().format(title=action_item["part"], previous_output=contact_previous_output())
                     ),
                     filter_list=filter_list,
                     messages=messages,
@@ -138,7 +141,7 @@ class Scheduler:
                         query_rewriting=plan.get_query_rewriting(),
                         query_domain=plan.get_query_domain(),
                         strategy=plan.get_strategy(),
-                        user_prompt=plan.get_user_prompt().format(title=action_item["part"])
+                        user_prompt=plan.get_user_prompt().format(title=action_item["part"], previous_output=contact_previous_output())
                     ),
                     messages=messages,
                     queue=queue
@@ -195,7 +198,7 @@ class Scheduler:
                 query_rewriting=plan.get_query_rewriting(),
                 query_domain=plan.get_query_domain(),
                 strategy=plan.get_strategy(),
-                user_prompt=plan.get_user_prompt().format(title=plan.get_query()),
+                user_prompt=plan.get_user_prompt().format(title=plan.get_query(), previous_output=""),
             ),
             result_set=result_set,
             messages=messages,
