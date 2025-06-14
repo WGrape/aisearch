@@ -4,27 +4,45 @@ import { Search } from "@/app/components/search";
 import { Title } from "@/app/components/title";
 import { Sidebar } from "@/app/components/sidebar";
 import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export default function SearchPage() {
   const [conversationId, setConversationId] = useState<number>(0);
   const [searchRecords, setSearchRecords] = useState<
     { query: string; mode: string; rid: string; conversation_id: number }[]
   >([]);
+  const searchParams = useSearchParams();
 
   // Retrieve conversation_id from localStorage
   useEffect(() => {
-    // 获取 localStorage 的值
     const local_conversation_id = localStorage.getItem("conversation_id");
-
-    // 判断是否为 null，如果是 null，则设置为 0；否则转换为数字
     const parsedId =
       local_conversation_id === null ? 0 : parseInt(local_conversation_id, 10);
-
-    // 更新状态
     setConversationId(parsedId);
   }, []);
 
+  // Handle initial search from URL parameters
+  useEffect(() => {
+    const query = searchParams.get("q") ? decodeURIComponent(searchParams.get("q")!) : "";
+    const mode = searchParams.get("mode") || "simple";
+    const rid = searchParams.get("rid");
+
+    // conversationId可能为0，所以不要限定
+    // if (query && rid && conversationId) {
+    if (query && rid) {
+      setSearchRecords((prev) => [
+        ...prev,
+        { query, mode, rid, conversation_id: conversationId },
+      ]);
+    }
+  }, [searchParams, conversationId]);
+
   const handleSearch = (query: string, mode: string, rid: string) => {
+    const local_conversation_id = localStorage.getItem("conversation_id");
+    const parsedId =
+      local_conversation_id === null ? 0 : parseInt(local_conversation_id, 10);
+    setConversationId(parsedId);
+
     if (conversationId) {
       setSearchRecords((prev) => [
         ...prev,

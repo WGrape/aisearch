@@ -27,12 +27,16 @@ export const parseSSE = (
     const data = sse_event_data.data;
     console.log("onmessage: ", sse_event_data, data)
     if (sse_event_data.event == "message_end") {
+
+      // Store conversation_id in localStorage
+      localStorage.setItem("conversation_id", sse_event_data.data.conversation_id);
+
       console.log("SSE connection closed: message_end")
       eventSource.close()
 
       // conversation_id = data.conversation_id;
       // mode = data.mode;
-      fetch(`http://127.0.0.1:8100/api/search/predict_questions?conversation_id=${conversation_id}`)
+      fetch(`http://127.0.0.1:8100/api/search/predict_questions?conversation_id=${sse_event_data.data.conversation_id}`)
       .then(response => {
           if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);

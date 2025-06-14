@@ -29,6 +29,9 @@ export const Search: FC<SearchProps> = ({ mode="simple", shouldNavigate = true, 
         e.preventDefault();
         if (value) {
           const rid = nanoid();
+          if (shouldNavigate) {
+            localStorage.setItem("conversation_id", "0");
+          }
           if (onSearch) {
             // 如果提供了 `onSearch` 回调，则调用它
             onSearch(value, mode, rid);
