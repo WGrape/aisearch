@@ -49,6 +49,7 @@ if query == "":
     print("请输入搜索的内容")
     exit(1)
 
+# 本地启动milvus后, 可以访问http://127.0.0.1:9091/webui/在线查看
 # 开始搜索
 search_res = client.search(
     collection_name=collection_name,

@@ -110,6 +110,12 @@ class Generator:
                     f"[citation:{c.get_doc_index()}] {c.select_as_citation()}" for i, c in
                     enumerate(result_set.get_web_document_list())
                 ]
+            ).join(
+                # 拼接知识库结果
+                [
+                    f"[citation:{i+1}] {c.get_value()}" for i, c in
+                    enumerate(result_set.get_knowledge_document_list())
+                ]
             ),
             emotion=self._select_emotion(generator_param=generator_param),
             answer_style=self._select_answer_style(generator_param=generator_param),

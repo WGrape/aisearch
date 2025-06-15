@@ -47,6 +47,7 @@ milvus:
   db_name: "milvus_aisearch"
   collection:
     aisearch_answer: "aisearch_answer"
+    aisearch_movie: "aisearch_movie"
     test: "test"
 ## 日志
 logger:
