@@ -10,9 +10,9 @@ from src.core.entity.search_result.result_set import ResultSet
 from wpylib.pkg.langchain.chain import make_chain_callbacks
 from src.core.entity.param.generator_param import GeneratorParam
 from wpylib.pkg.sse.stream_queue import StreamQueue, NoneQueue
+from langchain_core.prompts.chat import SystemMessage, HumanMessage
 from src.init.init import global_config, global_instance_localcache
 from src.core.entity.search_result.markdown_outcome import MarkdownOutcome
-from langchain_core.prompts.chat import SystemMessage, HumanMessage, AIMessage
 import re
 
 STREAM_MESSAGE_GENERATION = "generation"

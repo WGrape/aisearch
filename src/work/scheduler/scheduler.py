@@ -5,13 +5,13 @@
 """
 from src.core.entity.plan.plan import Plan
 from src.core.entity.search_result.outcome import Outcome
-from wpylib.pkg.sse.stream_queue import StreamQueue, NoneQueue
 from src.core.entity.search_result.result_set import ResultSet
 from src.core.entity.param.generator_param import GeneratorParam
 from src.core.entity.param.retriever_param import RetrieverParam
+from wpylib.pkg.sse.stream_queue import StreamQueue, NoneQueue
+from src.core.entity.schedule_result.schedule_result import ScheduleResult
 from src.work.scheduler.action.output_action import OutputAction
 from src.work.scheduler.action.search_web_action import SearchWebAction
-from src.core.entity.schedule_result.schedule_result import ScheduleResult
 from src.work.scheduler.action.search_local_action import SearchLocalAction
 from src.work.scheduler.action.search_web_and_output_action import SearchWebAndOutputAction
 from src.core.analyzer.analyzer import INTENTION_TYPE_NONE, ACTION_TYPE_END, ACTION_TYPE_OUTPUT, \
