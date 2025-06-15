@@ -31,7 +31,7 @@ class MilvusSearchRetriever(Retriever):
             search_list = global_instance_milvus.search(
                 collection_name=global_config["milvus"]["collection"]["aisearch_movie"],
                 query=query,
-                output_fields=["key", "value"],
+                output_fields=["name", "description"],
                 limit=count
             )
         except Exception as e:
@@ -48,9 +48,9 @@ class MilvusSearchRetriever(Retriever):
         knowledge_document_list: list[KnowledgeDocument] = []
         for index, item in enumerate(search_list):
             document = KnowledgeDocument(
-                key=search_list[index]["entity"]["key"],
-                value=search_list[index]["entity"]["value"],
-                score=search_list[index]["entity"]["score"]
+                key=search_list[index]["entity"]["name"],
+                value=search_list[index]["entity"]["description"],
+                score=search_list[index]["distance"]
             )
             knowledge_document_list.append(document)
         result_set.reset(knowledge_document_list=knowledge_document_list)

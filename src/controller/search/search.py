@@ -117,6 +117,7 @@ def search_sse():
             return
 
         # (7) 发送引用信息
+        # 注意只有走搜索引擎检索的结果才会有引用信息, 走知识库检索的不会作为引用信息展示
         queue.send_message(type_str=STREAM_MESSAGE_REFERENCE, item={
             "list": [
                 {
