@@ -18,7 +18,7 @@ class ScheduleResult:
     _outcome: Outcome  # 结果: 生成阶段的产物
 
     _result_set_list: list[ResultSet] = []  # 结果集列表: 多个结果集组成的列表
-    _outcome_list: list[Outcome] = []  # 结果列表: 多个generation阶段的产物
+    _outcome_list: list[Outcome] = []  # 结果列表: 多个生成阶段的产物
 
     def __init__(
             self,
