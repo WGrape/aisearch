@@ -28,7 +28,11 @@ npm run dev
 
 ## 三、后端部署
 
-### 1、启动Milvus
+### 1、安装wpylib依赖
+
+本项目依赖[wpylib](https://github.com/WGrape/wpylib)库，运行所需要的版本号已标注在[requirements.txt](./requirements.txt)文件中。此外，需要注意的是，[wpylib](https://github.com/WGrape/wpylib)项目如无重大问题，将不再更新。如果后续有更新，仅发布在```0.{次版本号}.{修订号}```版本号下，且只发布在pip平台下，点击[查看地址](https://pypi.org/project/wpylib/)。
+
+### 2、启动Milvus
 ```bash
 # Download the configuration file
 wget https://github.com/milvus-io/milvus/releases/download/v2.5.13/milvus-standalone-docker-compose.yml -O docker-compose.yml
@@ -41,7 +45,7 @@ sudo docker compose up -d
 # Creating milvus-standalone ... done
 ```
 
-### 2、部署本地模型
+### 3、部署本地模型
 先下载 [ollama](https://ollama.com/) 工具，然后搜索模型，进行下载即可。
 ```bash
 # 下载部署deepseek对话模型
@@ -51,16 +55,16 @@ ollama run deepseek-r1:8b
 ollama run nomic-embed-text:v1.5
 ```
 
-### 3、配置langfuse
+### 4、配置langfuse
 请前往 [langfuse](https://cloud.langfuse.com/) 官网，注册账号并创建项目。在项目中获取 API secret_key 和 public_key ，并在 config/{env}/config.yml 配置文件中修改 langfuse 对应配置即可。
 
-### 4、申请搜索引擎秘钥
+### 5、申请搜索引擎秘钥
 请按照流程申请 Bing 搜索引擎服务，并在获取秘钥后，修改 config/{env}/config.yml 配置文件中的 bing_subscription_key 配置即可。
 
-### 5、部署本地数据库
+### 6、部署本地数据库
 如果没有安装 MySQL，请先安装 MySQL 数据库，并在 config/{env}/config.yml 配置文件中修改 database 数据库配置即可。
 
-### 6、启动服务
+### 7、启动服务
 
 ```bash
 python src/main.py --dir=~/github/aisearch --env=test
