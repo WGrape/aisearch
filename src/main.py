@@ -2,7 +2,7 @@
 @File: main.py
 @Date: 2024/12/10 10:00
 """
-# 1. 把目录加到Python系统路径中, 防止找不到模块
+# 1. 把目录加到系统路径中, 防止Python找不到模块
 import os
 import sys
 
@@ -36,7 +36,9 @@ from src.api.register import register as register_api
 
 register_api()
 
-# 5. 暴露给UWSGI
+# 5. 获取全局的Flask应用实例
+# 如果使用UWSGI部署的方式，该app实例会被自动加载，并用于处理HTTP请求
+# 如果使用本地启动的方式，该app实例会用于后续的路由注册和运行
 from src.init.init import global_instance_flask
 
 app = global_instance_flask.get_instance_app()
