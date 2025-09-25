@@ -1,10 +1,25 @@
+"""
+@File: web_search.py
+@Date: 2024/12/10 10:00
+@Desc: 联网搜索工具
+"""
 from typing import Any
-from langchain_community.utilities import BingSearchAPIWrapper
-from langchain_community.utilities import SearchApiAPIWrapper
+from langchain.tools import BaseTool
+from langchain_community.utilities import BingSearchAPIWrapper, SearchApiAPIWrapper
 
 SEARCHAPI_API_KEY = ""
 OPENAI_API_KEY = ""
 OPENAI_BASE_URL = "https://api.deepseek.com"
+OPENAI_MODEL = "deepseek-chat"
+OPENAI_MODEL_TYPE = "model_type_deepseek_chat"
+MODEL_CONFIG = {
+    "api_base": OPENAI_BASE_URL,
+    "api_key": OPENAI_API_KEY,
+    "model": OPENAI_MODEL,
+    "model_type": OPENAI_MODEL_TYPE,
+    "max_tokens": 512,
+    "retry": 3,
+}
 
 
 class WebSearch:
@@ -56,20 +71,33 @@ class WebSearch:
         return result
 
 
-def search_web_tool(query: str) -> str:
+def search_web_tool(query: str, count: int = 5) -> str:
     """
     联网搜索工具
+    :param query: 搜索内容
+    :param count: 搜索结果数量
     """
     result = WebSearch(engine=WebSearch.ENGINE_TYPE_SEARCHAPI, engine_config={
         "searchapi_api_key": SEARCHAPI_API_KEY,
-    }).search(query=query, count=5)
+    }).search(query=query, count=count)
 
     search_result_str = ""
     for k, item in enumerate(result):
         search_result_str += f"""[{k + 1}] 标题: {item["title"]} 链接: {item["url"]} 描述: {item["desc"]}\n"""
-    search_context = f"搜索结果如下所示：{search_result_str}"
+    search_context = f"=> 搜索行为 | 搜索内容：{query} | 搜索结果如下所示\n{search_result_str}"
     print(search_context)
     return search_context
+
+
+class SearchWebTool(BaseTool):
+    name = "search_web_tool"  # 名字必须符合正则^[a-zA-Z0-9_-]+$
+    description = "联网搜索工具，通过网络搜索获取更详细更权威更实时的信息"
+
+    def _run(self, query: str) -> str:
+        return search_web_tool(query)
+
+    def _arun(self, query: str) -> str:
+        raise NotImplementedError("This tool does not support async")
 
 
 WEBSEARCH_TOOL_DEFINITION = {

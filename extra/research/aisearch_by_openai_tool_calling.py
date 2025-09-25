@@ -1,19 +1,24 @@
+"""
+@File: aisearch_by_openai_tool_calling.py
+@Date: 2024/12/10 10:00
+@Desc: 基于OpenAI的tool-calling实现AI搜索
+"""
 import os
 import sys
 import json
 from openai import OpenAI
-from web_search import search_web_tool, OPENAI_API_KEY, OPENAI_BASE_URL, WEBSEARCH_TOOL_DEFINITION
+from web_search import search_web_tool, OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_MODEL, WEBSEARCH_TOOL_DEFINITION
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # 先调用模型并传递工具, 获取工具调用信息
 messages = [
     {"role": "system", "content": "你是一个智能助手，"},
-    {"role": "user", "content": "搜索今天北京的天气"},
+    {"role": "user", "content": "搜索北京今天的天气"},
 ]
 model = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_BASE_URL)
 llm_result = model.chat.completions.create(
-    model="deepseek-chat",
+    model=OPENAI_MODEL,
     messages=messages,
     stream=False,
     tools=[WEBSEARCH_TOOL_DEFINITION]
@@ -50,7 +55,7 @@ print(messages)
 
 # 将工具调用结果传入上下文, 获取大模型的最终输出
 llm_text_generator = model.chat.completions.create(
-    model="deepseek-chat",
+    model=OPENAI_MODEL,
     messages=messages,
     stream=True,
 )
