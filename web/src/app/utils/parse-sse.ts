@@ -15,6 +15,9 @@ export const parseSSE = (
   onRelates: (value: Relate[]) => void,
   onError?: (status: number) => void,
 ) => {
+  if (isNaN(conversation_id)) {
+    conversation_id = 0
+  }
   const eventSource = new EventSource(`http://127.0.0.1:8100/api/search_sse?conversation_id=${conversation_id}&query=${encodeURIComponent(query)}&mode=${mode}`);
 
   // Store conversation_id in localStorage
